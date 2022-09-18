@@ -1,19 +1,14 @@
-#-------------------------------------------------------------------
-# MÓDULOS
-#-------------------------------------------------------------------
-
-
 import telepot
 import urllib3
 import commands
-from utils import Message
 from flask import Flask, request
-from botdata import nick, TOKEN, segredo
 
+from compbot.botdata import nick, TOKEN, segredo
+from compbot.utils import Message
 
-#-------------------------------------------------------------------
-# CONEXÃO
-#-------------------------------------------------------------------
+# -------------------------------------------------------------------
+#  CONEXÃO
+# -------------------------------------------------------------------
 
 
 proxy_url = 'http://proxy.server:3128'
@@ -27,9 +22,9 @@ bot = telepot.Bot(TOKEN)
 bot.setWebhook(f'https://{nick}.pythonanywhere.com/{segredo}', max_connections=1)
 
 
-#-------------------------------------------------------------------
+# -------------------------------------------------------------------
 # NOVA MENSAGEM
-#-------------------------------------------------------------------
+# -------------------------------------------------------------------
 
 
 @app.route(f'/{segredo}', methods=['POST'])
@@ -50,17 +45,14 @@ def telegram_webhook():
         if 'text' in update['message']:
             try:
                 text: str = update['message']['text']
-                userId: int = update['message']['from']['id']
-                userName: str = update['message']['from']['first_name']
-                chatId: int = update['message']['chat']['id']
+                user_id: int = update['message']['from']['id']
+                username: str = update['message']['from']['first_name']
+                chat_id: int = update['message']['chat']['id']
                 date: int = update['message']['date']
                 
                 # Processa a mensagem
-                commands.processar(Message(text, userId, userName, chatId, date))
+                commands.processar(Message(text, user_id, username, chat_id, date))
             except Exception as erro:
                 print(erro)
 
     return 'OK'
-
-
-#-------------------------------------------------------------------
