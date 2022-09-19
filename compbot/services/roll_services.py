@@ -13,7 +13,7 @@ def parse_roll_str(roll_str: str) -> tuple[int, int, int]:
     :raise ValueError: raised if string does not match required format.
     """
     # Create regex mask to match strings like "2d6" or "2d6 + 5"
-    roll_pattern = compile(r'\s*(\d+)\s*d\s*(\d+)(\s*[-\+]\s*\d+)?\s*')
+    roll_pattern = compile(r'\s*(\d+)\s*d\s*(\d+)(\s*[+-]\s*\d+)?\s*')
     # Verify match
     match = roll_pattern.match(roll_str)
     if not match:
@@ -23,15 +23,24 @@ def parse_roll_str(roll_str: str) -> tuple[int, int, int]:
     # Check modifier
     if modifier is None:
         modifier = 0
+    elif '+' in modifier:
+        _, modifier = modifier.split('+')
+    elif '-' in modifier:
+        _, modifier = modifier.split('-')
     # Return tuple
     return int(num_dice), int(num_faces), int(modifier)
 
 
 def roll(num_dice: int, num_faces: int, modifier: int = 0) -> int:
+    """
+    Rolls dice.
+
+    :param num_dice: number of dice to be rolled.
+    :param num_faces: number of faces (possible values) of each die.
+    :param  modifier: modifier to be added to the rolled results (defaults to zero).
+    :return: sum of results of rolled dice added to the modifier
+    """
     seed(time())
-    total = 0
-    for _ in range(num_dice):
-        rolled_value = randint(1, num_faces)
-        total += rolled_value
-    return total + modifier
+    total_rolled = sum([randint(1, num_faces) for _ in range(num_dice)])
+    return total_rolled + modifier
 
