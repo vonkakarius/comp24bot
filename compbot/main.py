@@ -5,6 +5,16 @@ from telegram.ext import ApplicationBuilder
 from compbot.handlers import greet_handlers
 from compbot.handlers import roll_handlers
 
+"""
+Telegram bot project. This is an amazing description of what it is.
+
+Supported commands:
+    /oi: greets caller with 'Oi, {caller_name}!'
+    /ola: greets caller with 'Olá, {caller_full_name}, tenha um ótimo dia!'
+    /cuprimente {name}: greets someone with 'Oi, {name}|'
+    /roll {AdB [+/- C]}: executes dice rolls and adds a modifier 
+"""
+
 
 if __name__ == '__main__':
     logging.basicConfig(
