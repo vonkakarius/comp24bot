@@ -1,5 +1,6 @@
 from telegram.ext import Application
 
+from compbot.handlers.exception import error_handler
 from compbot.handlers import greet_handlers
 from compbot.handlers import roll_handlers
 from compbot.handlers import unexpected_handlers
@@ -23,3 +24,5 @@ def add_api(application: Application):
     application.add_handler(roll_handlers.roll)
     # Add unknown command handler
     application.add_handler(unexpected_handlers.reply_unknown_command)
+    # Add error handler
+    application.add_error_handler(error_handler)

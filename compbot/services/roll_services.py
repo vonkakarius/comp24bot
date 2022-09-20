@@ -2,6 +2,10 @@ from time import time
 from random import seed, randint
 from re import compile
 
+from telegram.constants import ParseMode
+
+from compbot.handlers.exception import UserError
+
 
 def parse_roll_str(roll_str: str) -> tuple[int, int, int]:
     """
@@ -9,7 +13,9 @@ def parse_roll_str(roll_str: str) -> tuple[int, int, int]:
 
     :param roll_str: roll string of the format "AdB [+/- C]", where A is the number of dice,
     B is the number of faces and C is the optional roll modifier.
+
     :return: tuple of the format (A,B,C) as above, with C defaulted to zero if not provided.
+
     :raise ValueError: raised if string does not match required format.
     """
     # Create regex mask to match strings like "2d6" or "2d6 + 5"
@@ -17,7 +23,11 @@ def parse_roll_str(roll_str: str) -> tuple[int, int, int]:
     # Verify match
     match = roll_pattern.match(roll_str)
     if not match:
-        raise ValueError('Invalid roll string.')
+        raise UserError(
+            description='User did not provide roll string as argument',
+            reply_message='A jogada deve ser, por exemplo, da forma <code>1d6</code> ou <code>1d4+5</code>',
+            parse_mode=ParseMode.HTML
+        )
     # Extract values
     num_dice, num_faces, modifier = match.groups()
     # Check modifier
