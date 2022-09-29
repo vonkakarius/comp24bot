@@ -1,6 +1,5 @@
 import logging
 from argparse import ArgumentParser
-from os import environ
 
 from telegram.ext import ApplicationBuilder
 
