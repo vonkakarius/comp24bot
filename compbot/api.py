@@ -7,9 +7,10 @@ from compbot.handlers import (
     chat_handlers,
     error_handlers
 )
+from compbot.handlers.test import test_error_handlers
 
 
-def add_api(application: Application):
+def add_api(application: Application, in_prod: bool = False):
     """
     Telegram bot project. This is an amazing description of what it is.
 
@@ -28,6 +29,10 @@ def add_api(application: Application):
     application.add_handler(greet_handlers.greet_someone)
     # Add roll handlers
     application.add_handler(roll_handlers.roll)
+    # Add test handlers (should not be done in the production environment)
+    if not in_prod:
+        application.add_handler(test_error_handlers.test_user_error)
+        application.add_handler(test_error_handlers.test_unexpected_error)
     # Add unknown command handler
     application.add_handler(unexpected_handlers.reply_unknown_command)
     # Add error handler
