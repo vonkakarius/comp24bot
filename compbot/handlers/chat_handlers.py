@@ -1,5 +1,6 @@
 from telegram import Update
 from telegram.ext import CallbackContext, CommandHandler
+from telegram.constants import ParseMode
 
 from compbot.utils.decorators import create_handler
 
@@ -8,7 +9,11 @@ from compbot.utils.decorators import create_handler
 async def get_chat_id(update: Update, context: CallbackContext):
     """Sends back the id of the chat"""
     message = (
-        f'ID do chat **{update.effective_chat.full_name}**:\n\n'
+        f'ID do chat **{update.message.chat.title}**:\n\n'
         f'{update.effective_chat.id}'
     )
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=message,
+        parse_mode=ParseMode.MARKDOWN
+    )
