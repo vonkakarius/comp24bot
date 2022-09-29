@@ -1,9 +1,11 @@
+from html import escape
+
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import CallbackContext, CommandHandler
 
-from compbot.handlers.decorators import create_handler
-from compbot.handlers.exception import UserError
+from compbot.utils.decorators import create_handler
+from compbot.utils.exceptions import UserError
 from compbot.services import greet_services
 
 
@@ -26,8 +28,8 @@ async def greet_someone(update: Update, context: CallbackContext):
     if not context.args:
         raise UserError(
             description='Greet target not provided.',
-            reply_message='Quem eu devo cumprimentar?\n\n'
-                          'Use <code>/cumprimente &lt;nome&gt</code>',
+            reply_message=f'Quem eu devo cumprimentar?\n\n'
+                          f'Use <code>{escape("/cumprimente <nome>")}</code>',
             parse_mode=ParseMode.HTML
         )
     target_name = context.args[0]

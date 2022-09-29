@@ -2,8 +2,8 @@ from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import CallbackContext, CommandHandler
 
-from compbot.handlers.decorators import create_handler
-from compbot.handlers.exception import UserError
+from compbot.utils.decorators import create_handler
+from compbot.utils.exceptions import UserError
 from compbot.services import roll_services
 
 

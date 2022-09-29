@@ -1,9 +1,12 @@
 from telegram.ext import Application
 
-from compbot.handlers.exception import error_handler
-from compbot.handlers import greet_handlers
-from compbot.handlers import roll_handlers
-from compbot.handlers import unexpected_handlers
+from compbot.handlers import (
+    greet_handlers,
+    roll_handlers,
+    unexpected_handlers,
+    chat_handlers,
+    error_handlers
+)
 
 
 def add_api(application: Application):
@@ -15,7 +18,10 @@ def add_api(application: Application):
         /ola: greets caller with 'Olá, {caller_full_name}, tenha um ótimo dia!'
         /cumprimente {name}: greets someone with 'Oi, {name}|'
         /roll {AdB [+/- C]}: executes dice rolls and adds a modifier
+        /getchatid: return id of the current chat
     """
+    # Add chat handlers
+    application.add_handler(chat_handlers.get_chat_id)
     # Add greet handlers
     application.add_handler(greet_handlers.simple_greet)
     application.add_handler(greet_handlers.complex_greet)
@@ -25,4 +31,4 @@ def add_api(application: Application):
     # Add unknown command handler
     application.add_handler(unexpected_handlers.reply_unknown_command)
     # Add error handler
-    application.add_error_handler(error_handler)
+    application.add_error_handler(error_handlers.error_handler)

@@ -4,7 +4,10 @@ from re import compile
 
 from telegram.constants import ParseMode
 
-from compbot.handlers.exception import UserError
+from compbot.utils.exceptions import UserError
+
+
+ROLL_REGEX = r'\s*(\d+)\s*d\s*(\d+)(\s*[+-]\s*\d+)?\s*'
 
 
 def parse_roll_str(roll_str: str) -> tuple[int, int, int]:
@@ -19,7 +22,7 @@ def parse_roll_str(roll_str: str) -> tuple[int, int, int]:
     :raise ValueError: raised if string does not match required format.
     """
     # Create regex mask to match strings like "2d6" or "2d6 + 5"
-    roll_pattern = compile(r'\s*(\d+)\s*d\s*(\d+)(\s*[+-]\s*\d+)?\s*')
+    roll_pattern = compile(ROLL_REGEX)
     # Verify match
     match = roll_pattern.match(roll_str)
     if not match:
@@ -37,6 +40,7 @@ def parse_roll_str(roll_str: str) -> tuple[int, int, int]:
         _, modifier = modifier.split('+')
     elif '-' in modifier:
         _, modifier = modifier.split('-')
+        modifier = -int(modifier)
     # Return tuple
     return int(num_dice), int(num_faces), int(modifier)
 
